@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivan David Martinez Barrientos</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:black;
+    color:white;
+    text-align:center;
+    cursor: crosshair;
+    overflow-x:hidden;
+}
+
+/* Partículas */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* Título */
+h1{
+    color:#00ffcc;
+    text-shadow:0 0 25px #00ffcc;
+}
+
+/* Botones */
+.nav-btn, .mode-btn{
+    padding:10px 20px;
+    margin:10px;
+    border:none;
+    background:#00ffcc;
+    color:black;
+    cursor:pointer;
+    font-weight:bold;
+    border-radius:10px;
+    transition:0.3s;
+}
+.nav-btn:hover, .mode-btn:hover{
+    background:white;
+    transform:scale(1.1);
+}
+
+/* Tablas */
+table{
+    margin:20px auto;
+    width:85%;
+    border-collapse:collapse;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    box-shadow:0 0 25px #00ffcc;
+    border-radius:15px;
+    overflow:hidden;
+    transition:0.4s;
+}
+table:hover{
+    box-shadow:0 0 40px #00ffff;
+    transform:scale(1.02);
+}
+th, td{
+    padding:15px;
+    border:1px solid rgba(0,255,204,0.3);
+}
+th{
+    background:rgba(0,255,204,0.2);
+    color:#00ffcc;
+}
+
+/* Foto */
+img{
+    width:200px;
+    border-radius:50%;
+    border:4px solid #00ffcc;
+    box-shadow:0 0 30px #00ffcc;
+}
+
+/* Secciones */
+.section{ display:none; }
+.active{ display:block; }
+
+/* Logros */
+.logro{
+    background:#111;
+    margin:10px;
+    padding:10px;
+    border-radius:10px;
+    cursor:pointer;
+}
+.logro:hover{
+    background:#00ffcc;
+    color:black;
+}
+
+/* Modo claro */
+.light-mode{
+    background:white;
+    color:black;
+}
+.light-mode table{
+    background:rgba(255,255,255,0.8);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<h1>Ivan David Martinez Barrientos</h1>
+
+<button class="nav-btn" onclick="showSection('inicio')">Inicio</button>
+<button class="nav-btn" onclick="showSection('sobre')">Sobre mí</button>
+<button class="nav-btn" onclick="showSection('logros')">Logros</button>
+<button class="mode-btn" onclick="toggleMode()">Cambiar Modo</button>
+
+<!-- INICIO -->
+<div id="inicio" class="section active">
+<table>
+<tr><th colspan="2">Bienvenido:</th></tr>
+<tr><td colspan="2"><img src="foto.jpeg"></td></tr>
+<tr><td>Nombre</td><td>Ivan David Martinez</td></tr>
+<tr><td>Curso</td><td>12 BTP-INFO</td></tr>
+<tr><td>Nivel</td><td>Desarrollo Web</td></tr>
+</table>
+</div>
+
+<!-- SOBRE -->
+<div id="sobre" class="section">
+<table>
+<tr><th colspan="2">Sobre mí</th></tr>
+<tr><td>Pasión</td><td>Buses y su tecnología.</td></tr>
+<tr><td>Amor</td><td>Tiempo con mi novia.</td></tr>
+<tr><td>Trabajo</td><td>Mejorar profesionalmente.</td></tr>
+<tr><td>Amigos</td><td>Momentos inolvidables.</td></tr>
+</table>
+</div>
+
+<!-- LOGROS -->
+<div id="logros" class="section">
+<h2>Logros Desbloqueables</h2>
+<div class="logro" onclick="unlock(this)">Gamer Legendario</div>
+<div class="logro" onclick="unlock(this)">Programador en Progreso</div>
+<div class="logro" onclick="unlock(this)">Experto en Buses</div>
+</div>
+
+<audio id="clickSound">
+<source src="https://www.soundjay.com/buttons/sounds/button-16.mp3" type="audio/mp3">
+</audio>
+
+<script>
+function showSection(id){
+    var sections=document.getElementsByClassName("section");
+    for(var i=0;i<sections.length;i++){
+        sections[i].classList.remove("active");
+    }
+    document.getElementById(id).classList.add("active");
+    document.getElementById("clickSound").play();
+}
+
+function unlock(element){
+    element.innerHTML += "DESBLOQUEADO";
+    element.style.background="#00ffcc";
+    element.style.color="black";
+}
+
+function toggleMode(){
+    document.body.classList.toggle("light-mode");
+}
+
+/* Partículas */
+var canvas=document.getElementById("particles");
+var ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+var particles=[];
+for(let i=0;i<100;i++){
+    particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*3,
+        d:Math.random()*1
+    });
+}
+
+function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#00ffcc";
+    for(let i=0;i<particles.length;i++){
+        let p=particles[i];
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
+        ctx.fill();
+        p.y+=p.d;
+        if(p.y>canvas.height){
+            p.y=0;
+            p.x=Math.random()*canvas.width;
+        }
+    }
+    requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
